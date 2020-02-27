@@ -45,7 +45,7 @@ EncFS_Context::EncFS_Context() {
    * Let's then compute max possible value for all these types for safety.
   */
   maxSize = (size_t)std::numeric_limits<ssize_t>::max();
-  if (std::numeric_limits<ssize_t>::max() > std::numeric_limits<off_t>::max()) {
+  if (std::numeric_limits<ssize_t>::max() > std::numeric_limits<off_t>::max()) { // NOLINT(misc-redundant-expression)
     maxSize = (size_t)std::numeric_limits<off_t>::max();
   }
   if (maxSize > (unsigned int)std::numeric_limits<int>::max()) {
