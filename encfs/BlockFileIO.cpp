@@ -42,7 +42,6 @@ static void clearCache(IORequest &req, unsigned int blockSize) {
 
 BlockFileIO::BlockFileIO(unsigned int blockSize, const FSConfigPtr &cfg)
     : _blockSize(blockSize), _allowHoles(cfg->config->allowHoles) {
-  CHECK(_blockSize > 1);
   _cache.data = new unsigned char[_blockSize];
   _noCache = cfg->opts->noCache;
 }

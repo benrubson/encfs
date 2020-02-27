@@ -1683,6 +1683,11 @@ RootPtr initFS(EncFS_Context *ctx, const std::shared_ptr<EncFS_Opts> &opts) {
       return rootInfo;
     }
 
+    if (config->blockSize <= 0 || (unsigned int)config->blockSize > ctx->maxSize) {
+      cout << _("Incorrect block size\n");
+      return rootInfo;
+    }
+
     std::shared_ptr<NameIO> nameCoder =
         NameIO::New(config->nameIface, cipher, volumeKey);
     if (!nameCoder) {
