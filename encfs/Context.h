@@ -74,6 +74,9 @@ class EncFS_Context {
   uint64_t nextFuseFh();
   std::shared_ptr<FileNode> lookupFuseFh(uint64_t);
 
+  // Operation max size
+  size_t maxSize;
+
  private:
   /* This placeholder is what is referenced in FUSE context (passed to
    * callbacks).

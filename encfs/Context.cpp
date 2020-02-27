@@ -37,6 +37,20 @@ EncFS_Context::EncFS_Context() {
   idleCount = -1;
   isUnmounting = false;
   currentFuseFh = 1;
+
+  /**
+   * fuse read() & write() take a size_t parameter, but return int.
+   * pread() & pwrite() take a size_t parameter, but return ssize_t.
+   * We also have off_t in the path at many places.
+   * Let's then compute max possible value for all these types for safety.
+  */
+  maxSize = (size_t)std::numeric_limits<ssize_t>::max();
+  if (std::numeric_limits<ssize_t>::max() > std::numeric_limits<off_t>::max()) {
+    maxSize = (size_t)std::numeric_limits<off_t>::max();
+  }
+  if (maxSize > (unsigned int)std::numeric_limits<int>::max()) {
+    maxSize = (unsigned int)std::numeric_limits<int>::max();
+  }
 }
 
 EncFS_Context::~EncFS_Context() {

@@ -723,10 +723,9 @@ ssize_t _do_read(FileNode *fnode, unsigned char *ptr, size_t size, off_t off) {
 
 int encfs_read(const char *path, char *buf, size_t size, off_t offset,
                struct fuse_file_info *file) {
-  // Unfortunately we have to convert from ssize_t (pread) to int (fuse), so
-  // let's check this will be OK
-  if (size > (size_t)std::numeric_limits<int>::max()) {
-    size = std::numeric_limits<int>::max();
+  EncFS_Context *ctx = context();
+  if (size > ctx->maxSize) {
+    size = ctx->maxSize;
   }
   return withFileNode("read", path, file,
                       bind(_do_read, _1, (unsigned char *)buf, size, offset));
@@ -751,14 +750,12 @@ ssize_t _do_write(FileNode *fnode, unsigned char *ptr, size_t size,
 
 int encfs_write(const char *path, const char *buf, size_t size, off_t offset,
                 struct fuse_file_info *file) {
-  // Unfortunately we have to convert from ssize_t (pwrite) to int (fuse), so
-  // let's check this will be OK
-  if (size > (size_t)std::numeric_limits<int>::max()) {
-    size = std::numeric_limits<int>::max();
-  }
   EncFS_Context *ctx = context();
   if (isReadOnly(ctx)) {
     return -EROFS;
+  }
+  if (size > ctx->maxSize) {
+    size = ctx->maxSize;
   }
   return withFileNode("write", path, file,
                       bind(_do_write, _1, (unsigned char *)buf, size, offset));
