@@ -94,8 +94,8 @@ class EncFS_Context {
   mutable pthread_mutex_t contextMutex;
   FileMap openFiles;
 
-  int usageCount;
   int idleCount;
+  bool isUsed;
   bool isUnmounting;
   std::shared_ptr<DirNode> root;
 

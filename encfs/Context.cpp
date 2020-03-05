@@ -33,8 +33,8 @@ EncFS_Context::EncFS_Context() {
   pthread_mutex_init(&wakeupMutex, nullptr);
   pthread_mutex_init(&contextMutex, nullptr);
 
-  usageCount = 0;
   idleCount = -1;
+  isUsed = false;
   isUnmounting = false;
   currentFuseFh = 1;
 
@@ -79,7 +79,7 @@ std::shared_ptr<DirNode> EncFS_Context::getRoot(int *errCode, bool skipUsageCoun
       // On some system, stat of "/" is allowed even if the calling user is
       // not allowed to list / to go deeper. Do not then count this call.
       if (!skipUsageCount) {
-        ++usageCount;
+        isUsed = true;
       }
     }
 
@@ -112,7 +112,7 @@ bool EncFS_Context::usageAndUnmount(int timeoutCycles) {
 
   if (root != nullptr) {
 
-    if (usageCount == 0) {
+    if (!isUsed) {
       ++idleCount;
     }
     else {
@@ -121,7 +121,7 @@ bool EncFS_Context::usageAndUnmount(int timeoutCycles) {
     VLOG(1) << "idle cycle count: " << idleCount << ", timeout at "
             << timeoutCycles;
 
-    usageCount = 0;
+    isUsed = false;
 
     if (idleCount < timeoutCycles) {
       return false;
