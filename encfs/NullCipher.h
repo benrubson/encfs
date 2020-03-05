@@ -44,7 +44,7 @@ class NullCipher : public Cipher {
 
   // create a new key based on a password
   virtual CipherKey newKey(const char *password, int passwdLength,
-                           int &iterationCount, long desiredDuration,
+                           int &iterationCount, int desiredDuration,
                            const unsigned char *salt, int saltLen);
   virtual CipherKey newKey(const char *password, int passwdLength);
   // create a new random key

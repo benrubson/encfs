@@ -95,7 +95,7 @@ class SSL_Cipher : public Cipher {
 
   // create a new key based on a password
   virtual CipherKey newKey(const char *password, int passwdLength,
-                           int &iterationCount, long desiredDuration,
+                           int &iterationCount, int desiredDuration,
                            const unsigned char *salt, int saltLen);
   // deprecated - for backward compatibility
   virtual CipherKey newKey(const char *password, int passwdLength);

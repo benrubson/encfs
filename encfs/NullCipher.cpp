@@ -86,7 +86,7 @@ NullCipher::~NullCipher() = default;
 
 Interface NullCipher::interface() const { return iface; }
 
-CipherKey NullCipher::newKey(const char *, int, int &, long,
+CipherKey NullCipher::newKey(const char *, int, int &, int,
                              const unsigned char *, int) {
   return gNullKey;
 }

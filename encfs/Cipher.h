@@ -81,7 +81,7 @@ class Cipher {
   // If iterationCount == 0, then desiredFunctionDuration is how many
   // milliseconds the password derivation function should take to run.
   virtual CipherKey newKey(const char *password, int passwdLength,
-                           int &iterationCount, long desiredFunctionDuration,
+                           int &iterationCount, int desiredFunctionDuration,
                            const unsigned char *salt, int saltLen) = 0;
   // deprecated - for backward compatibility
   virtual CipherKey newKey(const char *password, int passwdLength) = 0;

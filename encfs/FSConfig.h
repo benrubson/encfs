@@ -65,7 +65,7 @@ struct EncFSConfig {
   std::vector<unsigned char> salt;
 
   int kdfIterations;
-  long desiredKDFDuration;
+  int desiredKDFDuration;
 
   bool plainData;         // do not encrypt file content
 

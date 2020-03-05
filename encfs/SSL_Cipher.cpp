@@ -412,7 +412,7 @@ Interface SSL_Cipher::interface() const { return realIface; }
     is used to encipher/decipher the master key.
 */
 CipherKey SSL_Cipher::newKey(const char *password, int passwdLength,
-                             int &iterationCount, long desiredDuration,
+                             int &iterationCount, int desiredDuration,
                              const unsigned char *salt, int saltLen) {
   std::shared_ptr<SSLKey> key(new SSLKey(_keySize, _ivLength));
 
@@ -420,7 +420,7 @@ CipherKey SSL_Cipher::newKey(const char *password, int passwdLength,
     // timed run, fills in iteration count
     int res =
         TimedPBKDF2(password, passwdLength, salt, saltLen, _keySize + _ivLength,
-                    KeyData(key), 1000 * desiredDuration);
+                    KeyData(key), (long)desiredDuration * 1000);
     if (res <= 0) {
       RLOG(WARNING) << "openssl error, PBKDF2 failed";
       return CipherKey();

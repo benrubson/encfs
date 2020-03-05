@@ -560,7 +560,7 @@ bool writeV6Config(const char *configFile, const EncFSConfig *cfg) {
   addEl(doc, config, "saltLen", (int)cfg->salt.size());
   addEl(doc, config, "saltData", cfg->salt);
   addEl(doc, config, "kdfIterations", cfg->kdfIterations);
-  addEl(doc, config, "desiredKDFDuration", (int)cfg->desiredKDFDuration);
+  addEl(doc, config, "desiredKDFDuration", cfg->desiredKDFDuration);
 
   auto err = doc.SaveFile(configFile, false);
   return err == tinyxml2::XML_SUCCESS;
@@ -1041,7 +1041,7 @@ RootPtr createV6Config(EncFS_Context *ctx,
   bool chainedIV = true;        // selectChainedIV()
   bool externalIV = false;      // selectExternalChainedIV()
   bool allowHoles = true;       // selectZeroBlockPassThrough()
-  long desiredKDFDuration = NormalKDFDuration;
+  int desiredKDFDuration = NormalKDFDuration;
 
   if (reverseEncryption) {
     chainedIV = false;
